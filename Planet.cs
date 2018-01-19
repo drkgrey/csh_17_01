@@ -9,21 +9,34 @@ namespace Asteroid_game
 {
     class Planet:BaseObject
     {
+        protected int n;
+        protected List<Image> list;
         public Planet(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
+            n = 0;
+            list = new List<Image>();
+            list.Add(Image.FromFile(@"C:\Users\11\source\repos\Asteroid_game\Asteroid_game\img\planet.png"));
+            list.Add(Image.FromFile(@"C:\Users\11\source\repos\Asteroid_game\Asteroid_game\img\mars.png"));
+            list.Add(Image.FromFile(@"C:\Users\11\source\repos\Asteroid_game\Asteroid_game\img\Neptune.png"));
+            list.Add(Image.FromFile(@"C:\Users\11\source\repos\Asteroid_game\Asteroid_game\img\moon.png"));
+            list.Add(Image.FromFile(@"C:\Users\11\source\repos\Asteroid_game\Asteroid_game\img\avatan.png"));
         }
+        
         public override void Draw()
-        {
-            Image image = Image.FromFile(@"C:\Users\11\source\repos\Asteroid_game\Asteroid_game\img\planet.png");
-            Game.Buffer.Graphics.DrawImage(image, Pos.X, Pos.Y, Size.Width, Size.Height);
-
+        {            
+            
+            Game.Buffer.Graphics.DrawImage(list.ElementAt(n), Pos.X, Pos.Y, Size.Width, Size.Height);
         }
+
         public override void Update()
         {
             Pos.X = Pos.X - Dir.X;
-            Pos.Y = Pos.Y - Dir.Y;
-            if (Pos.X <= 0) Pos.X = Game.Width - Size.Width;
-            if (Pos.Y <= 0) Pos.Y = Game.Height - Size.Height;
+            if (Pos.X < -Size.Width)
+            {
+                n++;
+                Pos.X = Game.Width ;
+                if (n == 4) n = 0;
+            }
         }
     }
 }

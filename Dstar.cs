@@ -22,8 +22,8 @@ namespace Asteroid_game
         {
             Pos.X = Pos.X + Dir.X;
             Pos.Y = Pos.Y - Dir.Y;
-            if (Pos.X > Game.Width) Pos.X = 0 + Size.Width;
-            if (Pos.Y < 0) Pos.Y = Game.Height - Size.Height;
+            if (Pos.X > Game.Width+Size.Width) Pos.X = -Size.Width;
+            if (Pos.Y < -Size.Height) Pos.Y = Game.Height;
         }
     }
 }

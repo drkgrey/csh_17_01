@@ -8,3 +8,4 @@ C:\Users\11\source\repos\Asteroid_game\Asteroid_game\obj\Debug\Asteroid_game.exe
 C:\Users\11\source\repos\Asteroid_game\Asteroid_game\obj\Debug\Asteroid_game.pdb
 C:\Users\11\source\repos\Asteroid_game\Asteroid_game\obj\Debug\Asteroid_game.Form1.resources
 C:\Users\11\source\repos\Asteroid_game\Asteroid_game\obj\Debug\Asteroid_game.csprojResolveAssemblyReference.cache
+C:\Users\11\source\repos\Asteroid_game\Asteroid_game\obj\Debug\Asteroid_game.SplashScreenForm.resources

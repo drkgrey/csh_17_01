@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Asteroid_game
 {
-    class Game
+    internal class Game
     {
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
@@ -36,7 +36,7 @@ namespace Asteroid_game
             // Связываем буфер в памяти с графическим объектом.
             // для того, чтобы рисовать в буфере
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
-            Game.Load();
+            Load();
             Timer timer = new Timer { Interval = 100 };
             timer.Start();
             timer.Tick += Timer_Tick;
@@ -75,13 +75,12 @@ namespace Asteroid_game
         {
             Random random = new Random();
             _list = new List<BaseObject>();
-            for (int i = 0; i < 3; i++) _list.Add(new Planet(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(i+1, i+2), new Size(60, 60)));
-            for (int i = 0; i < 4; i++) _list.Add(new Planet(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(-i*2+ 1, i + 2), new Size(50, 50)));
-            for (int i = 0; i < 30; i++) _list.Add(new Star(new Point(random.Next(0,Width), random.Next(0, Height)), new Point(i+1, 0), new Size(15,15)));
-            _list.Add(new Dstar(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(1, 1), new Size(100, 100)));
-            _objs = new BaseObject[40];
+            _list.Add(new Planet(new Point(random.Next(0, Width), random.Next(0, Height-200)), new Point(2, 0), new Size(100, 100)));
+            for (int i = 0; i < 100; i++) _list.Add(new Star(new Point(random.Next(0,Width), random.Next(0, Height)), new Point(i+1, 0), new Size(5,5)));
+            _list.Add(new Dstar(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(5, 5), new Size(100, 100)));
+            _objs = new BaseObject[30];
             for (int i = 0; i < _objs.Length ; i++)
-                _objs[i] = new BaseObject(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(i+1, -i), new Size(5, 5));
+                _objs[i] = new BaseObject(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(i+1, -i), new Size(3, 3));
            
            
         }

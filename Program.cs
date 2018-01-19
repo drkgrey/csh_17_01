@@ -16,12 +16,16 @@ namespace Asteroid_game
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            SplashScreenForm form1 = new SplashScreenForm();
+            SplashScreen.Init(form1);
+            form1.Show();
+            Application.Run(form1);
             Form form = new Form();
             form.Width = 800;
             form.Height = 600;
             Game.Init(form);
-            form.Show();
             Game.Draw();
+            form.Show();
             Application.Run(form);
         }
     }

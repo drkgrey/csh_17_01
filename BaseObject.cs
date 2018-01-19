@@ -20,7 +20,8 @@ namespace Asteroid_game
         }
         public virtual void Draw()
         {
-            Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
+            Brush brush = new SolidBrush(Color.Orange);
+            Game.Buffer.Graphics.FillEllipse(brush, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
         public virtual void Update()
         {
