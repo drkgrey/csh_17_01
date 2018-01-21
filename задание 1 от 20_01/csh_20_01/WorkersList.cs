@@ -10,14 +10,20 @@ namespace csh_20_01
     class WorkersList: IEnumerable<Worker>
     {
         public static int n;
+        protected static Worker[] _list;
+
+        public static Worker[] Create()
+        {
+            _list = Worker.WorkerListRnd(n);
+            return _list;
+        }
         
         public static string[] Show()
         {
-            var worker = Worker.WorkerListRnd(n);
-            string[] list = new string[worker.Length];
+            string[] list = new string[_list.Length];
             var a = 0;
-            Array.Sort(worker, new CompareBySalary());
-            foreach (var i in worker)
+            
+            foreach (var i in _list)
             {
                 list[a] = i.Show();
                 a++;
