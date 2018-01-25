@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Asteroid_game
 {
@@ -27,6 +28,8 @@ namespace Asteroid_game
             Form form = new Form();
             form.Width = 800;
             form.Height = 600;
+            using (StreamWriter sw = new StreamWriter("C:/Users/11/csh_17_01/Asteroid_game/Asteroid_game/log.txt"))
+                sw.WriteLine("");
             Game.Init(form);
             Game.Draw();
             form.Show();

@@ -24,12 +24,8 @@ namespace Asteroid_game
             };
 
         }
-        
-        public override void Draw()
-        {            
-            
-            Game.Buffer.Graphics.DrawImage(list.ElementAt(n), Pos.X, Pos.Y, Size.Width, Size.Height);
-        }
+
+        public override void Draw() => Game.Buffer.Graphics.DrawImage(list.ElementAt(n), Pos.X, Pos.Y, Size.Width, Size.Height);
 
         public override void Update()
         {
