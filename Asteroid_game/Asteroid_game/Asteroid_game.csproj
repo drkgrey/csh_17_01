@@ -48,7 +48,6 @@
     <Compile Include="Asteroid.cs" />
     <Compile Include="BaseObject.cs" />
     <Compile Include="Bullet.cs" />
-    <Compile Include="ConsoleWritelineEventArgs.cs" />
     <Compile Include="Dot.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -59,12 +58,10 @@
     <Compile Include="Game.cs" />
     <Compile Include="Dstar.cs" />
     <Compile Include="GameException.cs" />
-    <Compile Include="Healpack.cs" />
     <Compile Include="ICollision.cs" />
     <Compile Include="Planet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ship.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="SplashScreenForm.cs">
       <SubType>Form</SubType>
@@ -106,15 +103,12 @@
   <ItemGroup>
     <Content Include="img\avatan.png" />
     <Content Include="img\Dstar.png" />
-    <Content Include="img\heal.png" />
     <Content Include="img\mars.png" />
     <Content Include="img\moon.png" />
     <Content Include="img\Neptune.png" />
     <Content Include="img\planet.png" />
     <Content Include="img\Space.png" />
     <Content Include="img\star.png" />
-    <Content Include="log.txt" />
-    <None Include="img\ship.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,7 +13,11 @@ namespace Asteroid_game
         public Dstar(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
         }
-        public override void Draw() => Game.Buffer.Graphics.DrawImage(Properties.Resources.Dstar, Pos.X, Pos.Y, Size.Width, Size.Height);
+        public override void Draw()
+        {
+            
+            Game.Buffer.Graphics.DrawImage(Properties.Resources.Dstar, Pos.X, Pos.Y, Size.Width, Size.Height);
+        }
         public override void Update()
         {
             Pos.X = Pos.X + Dir.X;

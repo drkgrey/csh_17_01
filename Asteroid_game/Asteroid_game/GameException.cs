@@ -9,6 +9,5 @@ namespace Asteroid_game
     class GameException: Exception
     {
         public GameException(string message)
-        : base(message){}
-    }
+        : base(message){}    }
 }

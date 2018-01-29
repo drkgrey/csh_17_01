@@ -5,23 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
-using System.IO;
-using static System.Console;
+
 
 namespace Asteroid_game
 {
     internal class Game
     {
-        public delegate void ConsoleHandler(object sender, ConsoleWritelineEventArgs e);
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
         public static BaseObject[] _objs;
         public static List<BaseObject> _list;
         private static Bullet _bullet;
-        private static Asteroid[] _asteroids;
-        private static Healpack _heal;
-        private static Ship _ship = new Ship(new Point(10, 400), new Point(5, 7), new Size(20, 15));        private static Timer _timer = new Timer();
-        public static Random Rnd = new Random();          public static int Width { get; set; }
+        private static Asteroid[] _asteroids;
+        // Свойства
+        // Ширина и высота игрового поля
+        public static int Width { get; set; }
         public static int Height { get; set; }
         static Game()
         {
@@ -29,41 +27,25 @@ namespace Asteroid_game
        
         public static void Init(Form form)
         {
+            // Графическое устройство для вывода графики
             Graphics g;
+            // предоставляет доступ к главному буферу графического контекста для текущего приложения
             _context = BufferedGraphicsManager.Current;
-            g = form.CreateGraphics();
+            g = form.CreateGraphics();// Создаём объект - поверхность рисования и связываем его с формой
+                                      // Запоминаем размеры формы
+
+            
             Width = form.Width;
             Height = form.Height;
             if (Width > 1000 || Height > 1000 || Width < 0 || Height < 0) throw new ArgumentOutOfRangeException();
+            // Связываем буфер в памяти с графическим объектом.
+            // для того, чтобы рисовать в буфере
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
             Load();
-            _timer = new Timer { Interval = 10 };
-            _timer.Start();
-            _timer.Tick += Timer_Tick;
-            form.KeyDown += Form_KeyDown;
-            Ship.MessageDie += Finish;            Ship.LogCrush += ConsoleLog;            Bullet.LogDestroed += ConsoleLog;            Healpack.LogHeals += ConsoleLog;            Ship.LogCrush += FileLog;            Bullet.LogDestroed += FileLog;            Healpack.LogHeals += FileLog;        }
-
-        public static void Finish()
-        {
-            _timer.Stop();
-            Buffer.Graphics.DrawString("The End", new Font(FontFamily.GenericSansSerif, 60,
-            FontStyle.Underline), Brushes.White, 200, 100);
-            Buffer.Render();
+            Timer timer = new Timer { Interval = 100 };
+            timer.Start();
+            timer.Tick += Timer_Tick;
         }
-
-        private static void Form_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.ControlKey)
-            {
-                _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 4),
-                new Point(4, 0), new Size(4, 1));
-            }
-            if (e.KeyCode == Keys.Up) _ship.Up();
-            if (e.KeyCode == Keys.Down) _ship.Down();
-            if (e.KeyCode == Keys.Right) _ship.Right();
-            if (e.KeyCode == Keys.Left) _ship.Left();
-        }
-
         private static void Timer_Tick(object sender, EventArgs e)
         {
             Draw();
@@ -71,104 +53,58 @@ namespace Asteroid_game
         }
 
 
-        private static void ConsoleLog(object sender, ConsoleWritelineEventArgs e)
-        {
-            WriteLine(e.Message);
-        }
-        private static void FileLog(object sender, ConsoleWritelineEventArgs e)
-        {
-            using (StreamWriter sw = new StreamWriter("C:/Users/11/csh_17_01/Asteroid_game/Asteroid_game/log.txt",true,Encoding.Default)) 
-            sw.WriteLine(e.Message);
-        }
-
         public static void Draw()
         {
             Buffer.Graphics.Clear(Color.Black);
             foreach (BaseObject obj in _list)
-                obj?.Draw();
+                obj.Draw();
             foreach (BaseObject obj in _objs)
-                obj?.Draw();
+                obj.Draw();
             foreach (Asteroid obj in _asteroids)
-                obj?.Draw();
-            _bullet?.Draw();
-            _ship?.Draw();
-            _heal?.Draw();
-            if (_ship != null)
-            {
-                Buffer.Graphics.DrawString("Energy:" + _ship.Energy, SystemFonts.DefaultFont, Brushes.White, 0,
-                0);
-                Buffer.Graphics.DrawString("Score:" + _ship.Score, SystemFonts.DefaultFont, Brushes.White, 100,
-                0);
-            }
+                obj.Draw();
+            _bullet.Draw();
             Buffer.Render();
         }
         public static void Update()
         {
             foreach (BaseObject obj in _objs)
-               obj?.Update();
+               obj.Update();
             foreach (BaseObject obj in _list)
-                obj?.Update();
-            _heal?.Update();
-            _bullet?.Update();
-            var a = 0;
-            for (var i = 0; i < _asteroids.Length; i++)
+                obj.Update();
+            foreach (Asteroid a in _asteroids)
             {
-                if (_asteroids[i] == null) { a++; continue; }
-                _asteroids[i].Update();
-                if (_bullet != null && _bullet.Collision(_asteroids[i]))
-                {
-                    _bullet.Destroed();
-                    System.Media.SystemSounds.Hand.Play();
-                        _asteroids[i] = null;
-                        _bullet = null;
-                      //_ship?.AmmoUp();
-                        _ship?.ScoreUp();
-                            
-                        continue;
-                }
-                if (!_ship.Collision(_asteroids[i])) continue;
-                _ship?.EnergyLow(Rnd.Next(1, 10));
-                System.Media.SystemSounds.Asterisk.Play();
-                _ship.Crush();
-                if (_ship.Energy <= 0) _ship?.Die();
-            }            if (_heal != null && _ship.Collision(_heal))
-            {
-                _heal.Heals();
-                _ship?.EnergyLow(-10);
-                _heal = null;
+                a.Update();
+                if (a.Collision(_bullet)) { System.Media.SystemSounds.Hand.Play();
+                    _bullet.Collision();
+                    a.Collision();
+                 }
             }
-            if (_ship.Score %5==0) { _heal = new Healpack(new Point(Width, Rnd.Next(0, Height)), new Point(2, 5), new Size(10, 10)); }
-            if (a == 10) {
-                AsteroidsCreate(Rnd);
-            }        }
+            _bullet.Update();
+        }
 
         public static void Load()
         {
-            StarCreate(Rnd);
-            AsteroidsCreate(Rnd);
-        }
-
-        private static void StarCreate(Random random)
-        {
+            Random random = new Random();
             _list = new List<BaseObject>();
+            _list.Add(new Planet(new Point(random.Next(0, Width), random.Next(0, Height-200)), new Point(2, 0), new Size(100, 100)));
+            //for (int i = 0; i < 100; i++) _list.Add(new Star(new Point(random.Next(0,Width), random.Next(0, Height)), new Point(i+1, 0), new Size(5,5)));
+            _list.Add(new Dstar(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(5, 5), new Size(100, 100)));
+
             _objs = new BaseObject[40];
+            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
+            _asteroids = new Asteroid[3];
+            
             for (var i = 0; i < _objs.Length; i++)
             {
                 int r = random.Next(5, 50);
-                _objs[i] = new Star(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(-r, r), new Size(3, 3));
+                _objs[i] =  new Star(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(-r, r), new Size(3, 3));
             }
-            _list.Add(new Planet(new Point(random.Next(0, Width), random.Next(0, Height - 200)), new Point(2, 0), new Size(100, 100)));
-            _list.Add(new Dstar(new Point(random.Next(0, Width), random.Next(0, Height)), new Point(5, 5), new Size(100, 100)));
-        }
 
-        private static void AsteroidsCreate(Random random)
-        {
-            _asteroids = new Asteroid[10];
             for (var i = 0; i < _asteroids.Length; i++)
-            {
-                int r = random.Next(5, 30);
+                {
+                int r = random.Next(5, 50);
                 _asteroids[i] = new Asteroid(new Point(Width, random.Next(0, Height)), new Point(-r / 5, r), new Size(r, r));
-            }
+                }
         }
     }
 }

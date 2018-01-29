@@ -14,7 +14,10 @@ namespace Asteroid_game
         {
             Power = 1;
         }
-        public override void Draw() => Game.Buffer.Graphics.FillEllipse(Brushes.White, Pos.X, Pos.Y, Size.Width, Size.Height);        public override void Update()
+        public override void Draw()
+        {
+            Game.Buffer.Graphics.FillEllipse(Brushes.White, Pos.X, Pos.Y, Size.Width, Size.Height);
+        }        public override void Update()
         {
             Pos.X = Pos.X + Dir.X;
             Pos.Y = Pos.Y + Dir.Y;
@@ -23,6 +26,9 @@ namespace Asteroid_game
             if (Pos.Y < 0) Dir.Y = -Dir.Y;
             if (Pos.Y > Game.Height) Dir.Y = -Dir.Y;
         }
-        public void Collision() => Pos.X = Game.Width;
+        public void Collision()
+        {
+            Pos.X = Game.Width;
+        }
     }
 }
