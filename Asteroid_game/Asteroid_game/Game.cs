@@ -120,7 +120,7 @@ namespace Asteroid_game
             var a = 0;
             for (var i = 0; i < _asteroids.Count; i++)
             {
-                if (_asteroids[i] == null) { a++; continue; }
+                if (_asteroids[i] == null)  continue; 
                 _asteroids[i].Update();
                 for (int j = 0; j < _bullets.Count; j++)
                 {
@@ -148,8 +148,10 @@ namespace Asteroid_game
                 _ship?.EnergyLow(-10);
                 _heal = null;
             }
-            if (_ship.Score %5==0) { _heal = new Healpack(new Point(Width, Rnd.Next(0, Height)), new Point(2, 5), new Size(10, 10)); }
-            if (a == NumberOfAsteroids) { NumberOfAsteroids++; AsteroidsCreate(Rnd, NumberOfAsteroids);}
+            if (_asteroids.All(x => x == null)) { NumberOfAsteroids++; AsteroidsCreate(Rnd, NumberOfAsteroids); }
+            if (_ship.Score %5==0) { _heal = new Healpack(new Point(Width, Rnd.Next(0, Height)), new Point(2, 5), new Size(10, 10));
+            if (NumberOfAsteroids%10==0) { _asteroids.Add(new Asteroid(new Point(Width, 100), new Point(2, -1), new Size(300, 300))); NumberOfAsteroids++; }
+            }
         }
         public static void Load()
         {
@@ -174,7 +176,7 @@ namespace Asteroid_game
             _asteroids = new List<Asteroid>();
             for (var i = 0; i < Number; i++)
             {
-                int r = random.Next(10, 40);
+                int r = random.Next(15, 40);
                 _asteroids.Add(new Asteroid(new Point(Width, random.Next(0, Height)), new Point(-200/(r*2), 150/(r*3)), new Size(r, r)));
             }
         }
