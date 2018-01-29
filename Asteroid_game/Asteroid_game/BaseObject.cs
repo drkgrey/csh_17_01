@@ -9,6 +9,8 @@ namespace Asteroid_game
 {
      abstract class BaseObject: ICollision
     {
+        public delegate void Message();
+        public delegate void ConsoleHandler(object sender, ConsoleWritelineEventArgs e);
         protected Point Pos;
         protected Point Dir;
         protected Size Size;
@@ -18,9 +20,7 @@ namespace Asteroid_game
             Dir = dir;
             Size = size;
             if (Dir.X > 60 || Dir.Y > 60) throw new GameException("слишком большая скорость объекта");
-            if (Pos.X < 0 || Pos.Y < 0 || Pos.X > Game.Width || Pos.Y > Game.Height)
-                throw new GameException("неверные координаты");
-             if(Size.Width < 0 || Size.Height < 0 || Size.Width > 300 || Size.Height > 300)
+            if(Size.Width < 0 || Size.Height < 0 || Size.Width > 300 || Size.Height > 300)
                 throw new GameException("некоректные размеры объекта");
         }
         public abstract void Draw();

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Asteroid_game.Program;
 
 namespace Asteroid_game
 {
@@ -21,13 +22,11 @@ namespace Asteroid_game
         private void Start_button_Click(object sender, EventArgs e)
         {
             Hide();
-            Form form = new Form();
             form.Width = 800;
             form.Height = 600;
+            form.Show();
             Game.Init(form);
             Game.Draw();
-            form.Show();
-
         }
 
         private void Exit_button_Click(object sender, EventArgs e)
