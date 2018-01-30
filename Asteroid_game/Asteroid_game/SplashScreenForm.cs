@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,11 @@ namespace Asteroid_game
 
         private void Record_button_Click(object sender, EventArgs e)
         {
-
+            FileStream f = new FileStream(@"..\..\test.txt", FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(f);
+            var high = sr.ReadLine();
+            if (high == null) high = "0";
+            SplashScreen.HighScore(high);
         }
     }
 }

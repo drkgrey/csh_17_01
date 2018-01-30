@@ -15,6 +15,9 @@ namespace Asteroid_game
         public static int Width { get; set; }
         public static int Height { get; set; }
         public static List<Dot> _list;
+        public static Timer timer;
+        public static int score;
+        public static bool show=false;
         static SplashScreen()
         {
         }
@@ -32,7 +35,7 @@ namespace Asteroid_game
             // для того, чтобы рисовать в буфере
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
             Load();
-            Timer timer = new Timer { Interval = 100 };
+            timer = new Timer { Interval = 100 };
             timer.Start();
             timer.Tick += Timer_Tick;
         }
@@ -54,6 +57,7 @@ namespace Asteroid_game
         public static void Draw()
         {
            Buffer.Graphics.Clear(Color.Empty);
+           if(show) Buffer.Graphics.DrawString("highscore:" + score, SystemFonts.DefaultFont, Brushes.White, Width/2, 0);
             foreach (Dot obj in _list)
                 obj.Draw();
             Buffer.Render();
@@ -61,6 +65,11 @@ namespace Asteroid_game
         public static void Update()
         {
                Dot.Update();
+        }
+        public static void HighScore(string st)
+        {
+            if (!show) show = true; else show = false;
+            score = Int32.Parse(st);
         }
     }
 }

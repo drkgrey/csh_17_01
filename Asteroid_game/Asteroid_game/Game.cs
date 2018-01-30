@@ -7,8 +7,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 using static System.Console;
-
-
+using System.Resources;
 
 namespace Asteroid_game
 {
@@ -21,11 +20,12 @@ namespace Asteroid_game
         public static List<BaseObject> _list;
         private static List<Asteroid> _asteroids;
         private static Healpack _heal;
-        private static Ship _ship = new Ship(new Point(10, 400), new Point(5, 7), new Size(20, 15));
+        private static Ship _ship = new Ship(new Point(10, 400), new Point(7, 7), new Size(20, 15));
         private static Timer _timer = new Timer();
         public static Random Rnd = new Random();
         private static List<Bullet> _bullets = new List<Bullet>();
         private static int NumberOfAsteroids = 5;
+        private static bool gameOver = false;
         public static int Width { get; set; }
         public static int Height { get; set; }
         static Game()
@@ -58,7 +58,21 @@ namespace Asteroid_game
             _timer.Stop();
             Buffer.Graphics.DrawString("The End", new Font(FontFamily.GenericSansSerif, 60,
             FontStyle.Underline), Brushes.White, 200, 100);
+            Buffer.Graphics.DrawString("нажмите space чтобы начать заново", new Font(FontFamily.GenericSansSerif, 15), Brushes.White, 200, 200);
+            Buffer.Graphics.DrawString("нажмите esc чтобы выйти", new Font(FontFamily.GenericSansSerif, 15), Brushes.White, 200, 250);
             Buffer.Render();
+            if (_ship.Score >SplashScreen.score)
+            {
+                using (FileStream fcreate = File.Open(@"..\..\test.txt", FileMode.Create))
+                {
+                    using (StreamWriter sw = new StreamWriter(fcreate))
+                    {
+                        sw.WriteLine(_ship.Score);
+                    }
+                }
+            }
+            gameOver = true;
+            
         }
         private static void Form_KeyDown(object sender, KeyEventArgs e)
         {
@@ -72,7 +86,8 @@ namespace Asteroid_game
             if (e.KeyCode == Keys.Down) _ship.Down();
             if (e.KeyCode == Keys.Right) _ship.Right();
             if (e.KeyCode == Keys.Left) _ship.Left();
-            if (e.KeyCode == Keys.Space) _ship.Die();
+            if (e.KeyCode == Keys.Space && gameOver) Application.Restart();
+            if (e.KeyCode == Keys.Escape && gameOver) Application.ExitThread();
         }
         private static void Timer_Tick(object sender, EventArgs e)
         {
